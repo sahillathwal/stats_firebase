@@ -27,6 +27,9 @@ dependencies:
   scoped_model:
   # get it
   get_it:
+  firebase_core: ^3.0.0
+  cloud_firestore:
+
 
 dev_dependencies:
   flutter_test:
