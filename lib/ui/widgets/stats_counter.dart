@@ -26,7 +26,7 @@ class StatsCounter extends StatelessWidget {
             Text(count.toString(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: size * 0.6, fontWeight: FontWeight.w800)),
+                    fontSize: size * 0.595, fontWeight: FontWeight.w800)),
             Text(title,
                 textAlign: TextAlign.center,
                 style: TextStyle(

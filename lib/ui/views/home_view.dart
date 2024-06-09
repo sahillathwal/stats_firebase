@@ -32,7 +32,7 @@ class HomeView extends StatelessWidget {
       {required double height,
       BuildContext? context,
       required Widget child,
-      bool hasTopStroke = false}) {
+      bool hasTopStroke = true}) {
     return Container(
         height: height,
         alignment: Alignment.center,

@@ -1,10 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:skeleton_watcher/ui/views/home_view.dart';
 import './service_locator.dart';
 
-void main() {
+void main() async {
   // Register all the models and services before the app starts
   setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   runApp(const MyApp());
 }
