@@ -95,16 +95,19 @@ class HomeView extends StatelessWidget {
           ),
         ),
         _getHeightContainer(
-            height:
-                screenHeight(context, dividedBy: 6, decreasedBy: toolbarHeight),
-            child: IndicatorButton(
-                title: 'FEEDBACK',
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FeedbackView()));
-                }))
+          height:
+              screenHeight(context, dividedBy: 6, decreasedBy: toolbarHeight),
+          child: IndicatorButton(
+            title: 'FEEDBACK',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeedbackView()),
+              );
+            },
+            indicationCount: model.unreadCount,
+          ),
+        )
       ],
     );
   }

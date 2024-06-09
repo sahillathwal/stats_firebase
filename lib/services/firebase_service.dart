@@ -11,6 +11,8 @@ class FirebaseService {
   final StreamController<List<UserFeedback>> _feedbackController =
       StreamController<List<UserFeedback>>();
 
+  final StreamController<int> _unreadController = StreamController<int>();
+
   FirebaseService() {
     FirebaseFirestore.instance // Get the firebase instance
         .collection('informations') // Get the informations collection
@@ -30,6 +32,8 @@ class FirebaseService {
   // Public feedback stream to be consumed in the model
   Stream<List<UserFeedback>> get feedback => _feedbackController.stream;
 
+  Stream<int> get unreadCount => _unreadController.stream;
+
   void _statsUpdated(DocumentSnapshot snapshot) {
     _statsController.add(Stats.fromSnapshot(snapshot));
   }
@@ -38,6 +42,7 @@ class FirebaseService {
   void _feedbackAdded(QuerySnapshot snapShot) {
     var feedback = _getFeedbackFromSnapshot(snapShot);
     _feedbackController.add(feedback);
+    _emitUnreadCount(feedback);
   }
 
   // Helper function that Converts a QuerySnapshot into a List<UserFeedback>
@@ -52,5 +57,11 @@ class FirebaseService {
       }
     }
     return feedbackItems;
+  }
+
+  void _emitUnreadCount(List<UserFeedback> userFeedback) {
+    var unreadCount =
+        userFeedback.where((feedbackItem) => !feedbackItem.read).length;
+    _unreadController.add(unreadCount);
   }
 }
