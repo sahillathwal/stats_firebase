@@ -12,6 +12,11 @@ class FeedbackViewModel extends BaseModel {
   FeedbackViewModel() {
     _firebaseService.feedback.listen(_onFeedbackUpdated);
   }
+
+  void markFeedbackAsRead(String userId) {
+    _firebaseService.markFeedbackAsRead(userId);
+  }
+
   void _onFeedbackUpdated(List<UserFeedback> feedback) {
     userFeedback = feedback;
     if (userFeedback == null) {

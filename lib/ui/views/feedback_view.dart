@@ -39,16 +39,22 @@ class FeedbackView extends StatelessWidget {
   }
 
   Widget _getListUi(FeedbackViewModel model) {
-    if (model.userFeedback == null) {
-      return ListView(); // Or some other widget
-    }
+    // if (model.userFeedback == null) {
+    //   return ListView(); // Or some other widget
+    // }
 
     return ListView.builder(
-        itemCount: model.userFeedback!.length,
-        itemBuilder: (context, itemIndex) {
-          var feedbackItem = model.userFeedback![itemIndex];
-          return FeedbackItem(feedbackItem: feedbackItem);
-        });
+      itemCount: model.userFeedback!.length,
+      itemBuilder: (context, itemIndex) {
+        var feedbackItem = model.userFeedback![itemIndex];
+        return FeedbackItem(
+          feedbackItem: feedbackItem,
+          onOpened: (feedbackId) {
+            model.markFeedbackAsRead(feedbackId);
+          },
+        );
+      },
+    );
   }
 
   Widget _getLoadingUi(BuildContext context) {

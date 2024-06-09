@@ -8,12 +8,15 @@ import 'feedback_label.dart';
 
 class FeedbackItem extends StatefulWidget {
   final Function(String)? onOpened;
+
   const FeedbackItem({
     super.key,
     required this.feedbackItem,
-    this.onOpened,
+    required this.onOpened,
   });
+
   final UserFeedback feedbackItem;
+
   @override
   _FeedbackItemState createState() => _FeedbackItemState();
 }
@@ -21,7 +24,9 @@ class FeedbackItem extends StatefulWidget {
 class _FeedbackItemState extends State<FeedbackItem> {
   double _height = 70.0;
   bool _showDetails = false;
+
   static const double descriptionPadding = 15.0;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -52,7 +57,7 @@ class _FeedbackItemState extends State<FeedbackItem> {
           Timer.periodic(const Duration(milliseconds: 150), (timer) {
             timer.cancel();
             if (widget.onOpened != null) {
-              widget.onOpened!(widget.feedbackItem.userId);
+              widget.onOpened!(widget.feedbackItem.id!);
             }
 
             setState(() {

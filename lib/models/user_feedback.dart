@@ -6,6 +6,7 @@ class UserFeedback {
   final String title;
   final int type;
   final String userId;
+  final String? id;
   UserFeedback(
       {required this.details,
       required this.note,
@@ -13,7 +14,8 @@ class UserFeedback {
       required this.read,
       required this.title,
       required this.type,
-      required this.userId});
+      required this.userId,
+      this.id});
   UserFeedback.fromData(Map<String, dynamic> data)
       : details = data['details'],
         note = data['note'],
@@ -21,5 +23,6 @@ class UserFeedback {
         read = data['read'] ?? false,
         title = data['title'],
         type = data['type'] ?? 0,
-        userId = data['userId'];
+        userId = data['userId'],
+        id = data['id'];
 }

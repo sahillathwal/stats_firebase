@@ -49,11 +49,14 @@ class FirebaseService {
   List<UserFeedback> _getFeedbackFromSnapshot(QuerySnapshot snapShot) {
     var feedbackItems = List<UserFeedback>.empty(growable: true);
     var documents = snapShot.docs;
+
     var hasDocuments = documents.isNotEmpty;
+
     if (hasDocuments) {
       for (var document in documents) {
-        feedbackItems.add(
-            UserFeedback.fromData(document.data() as Map<String, dynamic>));
+        var documentData = document.data() as Map<String, dynamic>;
+        documentData['id'] = document.id;
+        feedbackItems.add(UserFeedback.fromData(documentData));
       }
     }
     return feedbackItems;
@@ -63,5 +66,12 @@ class FirebaseService {
     var unreadCount =
         userFeedback.where((feedbackItem) => !feedbackItem.read).length;
     _unreadController.add(unreadCount);
+  }
+
+  void markFeedbackAsRead(String feedbackId) {
+    FirebaseFirestore.instance
+        .collection('feedback')
+        .doc(feedbackId)
+        .update({'read': true});
   }
 }
