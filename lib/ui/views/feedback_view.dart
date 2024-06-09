@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:skeleton_watcher/models/list_item.dart';
 import 'package:skeleton_watcher/scoped_models/feedback_view_model.dart';
 import 'package:skeleton_watcher/ui/shared/font_styles.dart';
-import 'package:skeleton_watcher/ui/shared/app_colors.dart';
+import 'package:skeleton_watcher/ui/shared/ui_reducers.dart';
 import 'package:skeleton_watcher/ui/views/base_view.dart';
+import 'package:skeleton_watcher/ui/widgets/feedback_item.dart';
+import 'package:skeleton_watcher/ui/widgets/watcher_toolbar.dart';
 
 class FeedbackView extends StatelessWidget {
   const FeedbackView({super.key});
@@ -11,10 +12,16 @@ class FeedbackView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<FeedbackViewModel>(
-        onModelReady: (model) => model.fetchListData(),
         builder: (context, childe, model) => Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: Container(child: _getBodyUi(context, model))));
+            body: Column(
+              children: <Widget>[
+                const WatcherToolbar(title: 'FEEDBACK', showBackButton: true),
+                SizedBox(
+                    height: screenHeight(context, decreasedBy: toolbarHeight),
+                    child: _getBodyUi(context, model)),
+              ],
+            )));
   }
 
   Widget _getBodyUi(BuildContext context, FeedbackViewModel model) {
@@ -32,28 +39,16 @@ class FeedbackView extends StatelessWidget {
   }
 
   Widget _getListUi(FeedbackViewModel model) {
-    return ListView.builder(
-        itemCount: model.listData?.length,
-        itemBuilder: (context, itemIndex) {
-          var item = model.listData?[itemIndex];
-          return _getListItemUi(item!);
-        });
-  }
+    if (model.userFeedback == null) {
+      return ListView(); // Or some other widget
+    }
 
-  Container _getListItemUi(ListItem result) {
-    return Container(
-      height: 100.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0), color: lightGrey),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(result.title, style: viewTitle),
-          Text(result.description)
-        ],
-      ),
-    );
+    return ListView.builder(
+        itemCount: model.userFeedback!.length,
+        itemBuilder: (context, itemIndex) {
+          var feedbackItem = model.userFeedback![itemIndex];
+          return FeedbackItem(feedbackItem: feedbackItem);
+        });
   }
 
   Widget _getLoadingUi(BuildContext context) {

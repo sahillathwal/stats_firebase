@@ -1,26 +1,23 @@
-import 'package:skeleton_watcher/models/list_item.dart';
+import 'package:skeleton_watcher/models/user_feedback.dart';
+import 'package:skeleton_watcher/service_locator.dart';
+import 'package:skeleton_watcher/services/firebase_service.dart';
 import 'base_model.dart';
 
 export 'package:skeleton_watcher/enums/view_state.dart';
 
 /// Contains logic for a list view with the general expected functionality.
 class FeedbackViewModel extends BaseModel {
-  List<ListItem>? listData;
-
-  Future fetchListData() async {
-    setState(ViewState.busy);
-
-    await Future.delayed(const Duration(seconds: 1));
-    listData = List<ListItem>.generate(
-        10,
-        (index) => ListItem(
-            title: 'title $index',
-            description: 'Description of this list Item. $index'));
-
-    if (listData == null) {
-      setState(ViewState.error);
+  final FirebaseService _firebaseService = locator<FirebaseService>();
+  List<UserFeedback>? userFeedback;
+  FeedbackViewModel() {
+    _firebaseService.feedback.listen(_onFeedbackUpdated);
+  }
+  void _onFeedbackUpdated(List<UserFeedback> feedback) {
+    userFeedback = feedback;
+    if (userFeedback == null) {
+      setState(ViewState.busy);
     } else {
-      setState(listData?.isEmpty == true
+      setState(userFeedback!.isEmpty
           ? ViewState.noDataAvailable
           : ViewState.dataFetched);
     }

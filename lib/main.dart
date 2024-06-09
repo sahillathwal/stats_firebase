@@ -5,9 +5,9 @@ import './service_locator.dart';
 
 void main() async {
   // Register all the models and services before the app starts
-  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setupLocator();
 
   runApp(const MyApp());
 }
